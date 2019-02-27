@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<currencys>
+    <COIN>
+        <NAME>Dollar</NAME>
+        <UNIT>1</UNIT>
+        <CURRENCYCODE>USD</CURRENCYCODE>
+        <COUNTRY>USA</COUNTRY>
+        <RATE>3.619</RATE>
+        <CHANGE>0.249</CHANGE>
+    </COIN>
+    <COIN>
+        <NAME>Pound</NAME>
+        <UNIT>1</UNIT>
+        <CURRENCYCODE>GBP</CURRENCYCODE>
+        <COUNTRY>Great Britain</COUNTRY>
+        <RATE>4.6888</RATE>
+        <CHANGE>-0.2</CHANGE>
+    </COIN>
+    <COIN>
+        <NAME>Yen</NAME>
+        <UNIT>100</UNIT>
+        <CURRENCYCODE>JPY</CURRENCYCODE>
+        <COUNTRY>Japan</COUNTRY>
+        <RATE>3.2970</RATE>
+        <CHANGE>0.408</CHANGE>
+    </COIN>
+</currencys>

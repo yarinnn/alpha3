@@ -80,4 +80,9 @@ public class Main extends AppCompatActivity {
         Intent t= new Intent(this, XMLParsing.class);
         startActivity(t);
     }
+
+    public void reg(View view) {
+        Intent s=new Intent(this, Signin.class );
+        startActivity(s);
+    }
 }

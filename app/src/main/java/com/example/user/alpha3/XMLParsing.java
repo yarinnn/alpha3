@@ -2,62 +2,96 @@ package com.example.user.alpha3;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 public class XMLParsing extends AppCompatActivity {
- /*   XML PARSE IS NOT WORKING
- XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
-    String rates_url="https://www.boi.org.il/currency.xml";
-    URL url = new URL(rates_url);
-    int event;
-    TextView test;
-    public XMLParsing() throws XmlPullParserException, MalformedURLException {
-    }
-*/
+
+    private TextView txt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xmlparsing);
 
+        txt = (TextView) findViewById(R.id.txt);
+        parseXML();
+    }
 
-/*        XML PARSE IS NOT WORKING
-        test= (TextView)findViewById(R.id.test);
-
+    private void parseXML() {
+        XmlPullParserFactory parserFactory;
         try {
-            parser.setInput(url.openStream() , null);
+            parserFactory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = parserFactory.newPullParser();
+            InputStream is = getAssets().open("data.xml");
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(is, null);
+            processParsing(parser);
         } catch (XmlPullParserException e) {
-            e.printStackTrace();
+
         } catch (IOException e) {
-            e.printStackTrace();
         }
+    }
 
-        try {
-            event = parser.getEventType();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
+    private void processParsing(XmlPullParser parser) throws IOException, XmlPullParserException {
+        ArrayList<Currency> currencys = new ArrayList<>();
+        int eventType = parser.getEventType();
+        Currency currentCurrency = null;
 
-        while (event != XmlPullParser.END_DOCUMENT){
-            try {
-                event=parser.next();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            String eltCOIN = null;
+
+            switch (eventType) {
+                case XmlPullParser.START_TAG:
+                    eltCOIN = parser.getName();
+
+                    if ("COIN".equals(eltCOIN)) {
+                        currentCurrency = new Currency();
+                        currencys.add(currentCurrency);
+                    } else if (currentCurrency != null) {
+                        if ("NAME".equals(eltCOIN)) {
+                            currentCurrency.NAME = parser.nextText();
+                        } else if ("UNIT".equals(eltCOIN)) {
+                            currentCurrency.UNIT = parser.nextText();
+                        } else if ("CURRENCYCODE".equals(eltCOIN)) {
+                            currentCurrency.CURRENCYCODE = parser.nextText();
+                        } else if ("COUNTRY".equals(eltCOIN)) {
+                            currentCurrency.COUNTRY = parser.nextText();
+                        } else if ("RATE".equals(eltCOIN)) {
+                            currentCurrency.RATE = parser.nextText();
+                        } else if ("CHANGE".equals(eltCOIN)) {
+                            currentCurrency.CHANGE = parser.nextText();
+                        }
+                    }
+                    break;
+
             }
+            eventType = parser.next();
         }
-*/
+        printCurrencycs(currencys);
+    }
 
-
+    private void printCurrencycs(ArrayList<Currency> currencys){
+        StringBuilder builder = new StringBuilder();
+        for (Currency currency : currencys) {
+            builder.append(currency.NAME).append("\n").
+                    append(currency.UNIT).append("\n").
+                    append(currency.CURRENCYCODE).append("\n").
+                    append(currency.COUNTRY).append("\n").
+                    append(currency.RATE).append("\n").
+                    append(currency.CHANGE).append("\n\n");
+        }
+        txt.setText(builder.toString());
 
     }
 }
+
+
